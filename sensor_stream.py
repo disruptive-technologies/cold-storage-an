@@ -93,7 +93,7 @@ def parse_arguments():
     """
 
     # create parser object
-    parser = argparse.ArgumentParser(description='Desk Occupancy Estimation on Stream and Event History.')
+    parser = argparse.ArgumentParser(description='Cold Storage Anomaly Detectiond on Stream and Event History.')
 
     # general arguments
     now = (datetime.datetime.utcnow().replace(microsecond=0)).isoformat() + 'Z'
