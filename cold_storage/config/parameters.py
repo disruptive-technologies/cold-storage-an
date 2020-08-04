@@ -1,0 +1,16 @@
+
+# delay
+H_DELAY = 3
+S_DELAY = 60*60*H_DELAY
+
+# robust sampling
+S_ROBUST_CYCLE     = 60*60*16
+S_ROBUST_WIDTH     = 60*60*24
+N_ROBUST_DAYS      = 5
+
+# bounds / threshold
+N_ROBUST_IN_BOUNDS = int(((60*60*24) / S_ROBUST_CYCLE) * N_ROBUST_DAYS)
+MMAD = 1
+BOUND_MINVAL = 0
+STORAGE_MAXTEMP = 4
+
