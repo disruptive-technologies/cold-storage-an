@@ -14,9 +14,9 @@ import cold_storage.helpers as     helpers
 from cold_storage.director  import Director
 
 # Fill in from the Service Account and Project:
-username   = "bsarver24te000b24bpg"       # this is the key
-password   = "8362c483e011479fb1066d9b20a0817b"     # this is the secret
-project_id = "bsarslgg7oekgsc2jb20"                # this is the project id
+username   = "SERVICE_ACCOUNT_KEY"       # this is the key
+password   = "SERVICE_ACCOUT_SECRET"     # this is the secret
+project_id = "PROJECT_ID"                # this is the project id
 
 # set url base
 api_url_base = "https://api.disruptive-technologies.com/v2"
@@ -93,7 +93,7 @@ def parse_arguments():
     """
 
     # create parser object
-    parser = argparse.ArgumentParser(description='Desk Occupancy Estimation on Stream and Event History.')
+    parser = argparse.ArgumentParser(description='Cold Storage Anomaly Detectiond on Stream and Event History.')
 
     # general arguments
     now = (datetime.datetime.utcnow().replace(microsecond=0)).isoformat() + 'Z'
