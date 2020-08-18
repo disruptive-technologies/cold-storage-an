@@ -196,11 +196,12 @@ class Director():
                 event_listing = requests.get(event_list_url, auth=(self.username, self.password), params=self.history_params)
                 event_json = event_listing.json()
         
-                try:
+                if event_listing.status_code < 300:
                     self.history_params['page_token'] = event_json['nextPageToken']
                     self.event_history += event_json['events']
-                except KeyError:
-                    hlp.print_error('Page token lost. Please try again.', terminate=True)
+                else:
+                    print(event_json)
+                    hlp.print_error('Status Code: {}'.format(event_listing.status_code), terminate=True)
         
                 if self.history_params['page_token'] is not '':
                     print('\t-- paging')
