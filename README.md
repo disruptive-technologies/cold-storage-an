@@ -13,7 +13,7 @@ The sensors themselves can be placed anywhere in the fridge/freezer. However, it
 ## Environment Setup
 Install dependencies.
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 Edit *sensor_stream.py* to provide the following authentication details of your project. Information about setting up your project for API authentication can be found in this [streaming API guide](https://support.disruptive-technologies.com/hc/en-us/articles/360012377939-Using-the-stream-API).
