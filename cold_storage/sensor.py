@@ -44,10 +44,14 @@ class Sensor():
 
 
     def new_event_data(self, event_data):
-        """Receive new event from Director and iterate algorithm.
+        """
+        Receive new event from Director and iterate algorithm.
 
-        parameters:
-            event_data -- Event json containing temperature data.
+        Parameters
+        ----------
+        event_data : dict 
+            Dictionary containing event information.
+
         """
 
         # convert timestamp to unixtime
@@ -63,7 +67,10 @@ class Sensor():
 
 
     def iterate(self):
-        """Iterate algorithm for new event data."""
+        """
+        Iterate algorithm for new event data.
+
+        """
 
         # calculate level as median of delay window
         delay_window = np.array(self.temperature_y)[self.temperature_ux > self.temperature_ux[-1] - 2*params.S_DELAY]
@@ -101,7 +108,10 @@ class Sensor():
 
 
     def robust_sampling(self):
-        """Find maxval, minval and MAD for historic data window."""
+        """
+        Find maxval, minval and MAD for historic data window.
+
+        """
 
         # isolate robust window
         t1 = self.temperature_ux[-1] - params.S_DELAY - params.S_ROBUST_WIDTH
