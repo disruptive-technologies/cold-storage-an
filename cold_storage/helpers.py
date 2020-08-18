@@ -24,7 +24,7 @@ def convert_event_data_timestamp(ts):
     return timestamp, unixtime
 
 
-def unixtime_to_datetime(ux):
+def ux_to_dt(ux):
     """Convert unixtime to datetime format.
 
     parameters:
@@ -165,3 +165,18 @@ def import_as_event_history(path):
         events.append(json)
 
     return events
+
+
+def json_sort_key(json):
+    """Return the event update time converted to unixtime.
+
+    Parameters:
+        json -- Event data json.
+
+    Returns:
+        unixtime -- Event data update time converted to unixtime.
+    """
+
+    timestamp = json['data']['temperature']['updateTime']
+    _, unixtime = convert_event_data_timestamp(timestamp)
+    return unixtime
