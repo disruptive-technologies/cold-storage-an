@@ -11,10 +11,10 @@ import numpy             as np
 import matplotlib.pyplot as plt
 
 # project
-import cold_storage.config.styling    as stl
-import cold_storage.config.parameters as params
-import cold_storage.helpers           as hlp
-from cold_storage.sensor              import Sensor
+import config.styling       as stl
+import config.parameters    as params
+import cold_storage.helpers as hlp
+from cold_storage.sensor    import Sensor
 
 
 class Director():
