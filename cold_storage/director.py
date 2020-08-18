@@ -68,7 +68,7 @@ class Director():
         """
     
         # create parser object
-        parser = argparse.ArgumentParser(description='Cold Storage Anomaly Detectiond on Stream and Event History.')
+        parser = argparse.ArgumentParser(description='Cold Storage Anomaly Detection on Stream and Event History.')
     
         # general arguments
         now = (datetime.datetime.utcnow().replace(microsecond=0)).isoformat() + 'Z'

@@ -28,7 +28,7 @@ Running *python3 sensor_stream.py* will start streaming data from all sensors in
 ```
 usage: sensor_stream.py [-h] [--path] [--starttime] [--endtime] [--plot] [--debug]
 
-Cold Storage Anomaly Detectiond on Stream and Event History.
+Cold Storage Anomaly Detection on Stream and Event History.
 
 optional arguments:
   -h, --help    show this help message and exit
