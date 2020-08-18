@@ -91,6 +91,11 @@ class Director():
 
 
     def __local_setup(self):
+        """
+        Sanitize path argument and generate fake devices list to spawn.
+
+        """
+
         # verify valid path
         if not os.path.exists(self.args['path']):
             hlp.print_error('Path [{}] is not valid.'.format(self.args['path']))
@@ -142,17 +147,30 @@ class Director():
 
 
     def initialise_plot(self):
+        """
+        Create figure and axis instances for progress plot.
+
+        """
+
         self.hfig, self.hax = plt.subplots(len(self.sensors), 1, sharex=True)
         if len(self.sensors) < 2:
             self.hax = [self.hax]
 
 
     def initialise_debug_plot(self):
+        """
+        Create figure and axis instances for debug plot.
+
+        """
+
         self.dfig, self.dax = plt.subplots(3, 1)
 
 
     def __spawn_devices(self):
-        """Use list of devices to spawn Desk and Reference objects for each."""
+        """
+        Use list of devices to spawn Desk and Reference objects for each.
+
+        """
 
         # empty lists of devices
         self.sensors = {}
@@ -211,7 +229,10 @@ class Director():
 
 
     def print_devices_information(self):
-        """Print information about active devices in stream."""
+        """
+        Print information about active devices in stream.
+
+        """
 
         print('\nDirector initialised for sensors:')
         # print desks
@@ -221,7 +242,8 @@ class Director():
 
 
     def run_history(self):  
-        """Iterate historic event data.
+        """
+        Iterate historic event data.
     
         """
 
@@ -252,8 +274,8 @@ class Director():
     
         Parameters
         ----------
-            n_reconnects : int
-        Number of retries if connection lost.
+        n_reconnects : int
+            Number of retries if connection lost.
 
         """
     
@@ -303,9 +325,13 @@ class Director():
     def __new_event_data(self, event_data, cout=True):
         """Receive new event_data json and pass it along to the correct device object.
 
-        Parameters:
-            event_data -- Data json containing new event data.
-            cout       -- Print device information to console if True.
+        Parameters
+        ----------
+        event_data : dictionary 
+            Data json containing new event data.
+        cout : bool 
+            Print device information to console if True.
+
         """
 
         # get id of source sensor
@@ -321,6 +347,10 @@ class Director():
 
 
     def plot_debug(self):
+        """
+        Plot a debug plot illustrating algorithm workings and status.
+
+        """
 
         print('\nDEBUG')
         print('Close plot to see next sensor.')
@@ -385,6 +415,11 @@ class Director():
 
 
     def plot_progress(self, blocking):
+        """
+        Plot a progress plot illustrating estimated thresholds and outliers.
+
+        """
+
         # iterate sensors
         for i, sid in enumerate(self.sensors.keys()):
             self.hax[i].cla()
