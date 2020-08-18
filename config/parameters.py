@@ -1,6 +1,6 @@
 
 # delay
-H_DELAY = 3                 # hours of historic data used in thresholds
+H_DELAY = 3                 # hours of historic data used in thresholds (rolling median halfwidth)
 S_DELAY = 60*60*H_DELAY     # seconds of historic data used in thresholds
 
 # robust sampling
