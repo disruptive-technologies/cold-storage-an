@@ -4,9 +4,9 @@ import numpy             as np
 import matplotlib.pyplot as plt
 
 # project
-import cold_storage.helpers           as helpers
-import cold_storage.config.styling    as stl
-import cold_storage.config.parameters as params
+import config.styling       as stl
+import config.parameters    as params
+import cold_storage.helpers as helpers
 
 
 class Sensor():
