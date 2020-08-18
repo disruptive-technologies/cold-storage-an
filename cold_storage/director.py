@@ -138,12 +138,11 @@ class Director():
         device_listing = requests.get(devices_list_url, auth=(self.username, self.password))
         
         # remove fluff
-        try:
+        if device_listing.status_code < 300:
             self.devices = device_listing.json()['devices']
-        except KeyError as e:
-            # an error here probably means connection issues
-            print(e)
-            hlp.print_error('Could not fetch devices.', terminate=True)
+        else:
+            print(device_listing.json())
+            hlp.print_error('Status Code: {}'.format(device_listing.status_code), terminate=True)
 
 
     def initialise_plot(self):
@@ -437,6 +436,8 @@ class Director():
         self.hax[-1].set_xlabel('Time')
 
         if blocking:
+            self.hax[0].set_title('Blocking')
             plt.show()
         else:
+            self.hax[0].set_title('Non-Blocking')
             plt.pause(0.01)
