@@ -103,6 +103,9 @@ class Director():
         # make a fake list of devices
         self.devices = [{'name': 'local_file', 'type': 'temperature'}]
 
+        # set fetch flag
+        self.fetch_history = True
+
         # spawn devices
         self.__spawn_devices()
 
@@ -277,6 +280,10 @@ class Director():
             Number of retries if connection lost.
 
         """
+
+        # don't run if local file
+        if self.args['path']:
+            return
     
         # cout
         print("Listening for events... (press CTRL-C to abort)")
@@ -375,16 +382,22 @@ class Director():
             self.dax[1].plot(hlp.ux_to_dt(sensor.temperature_ux), sensor.temperature_y, color=stl.wheel[0],       label='Temperature')
             self.dax[1].plot(hlp.ux_to_dt(sensor.level_ux),       sensor.level_y,       color='k', linewidth=2.5, label='Baseline')
             self.dax[2].get_shared_x_axes().join(self.dax[1], self.dax[2])
-            self.dax[2].plot(hlp.ux_to_dt(sensor.temperature_ux), np.array(sensor.temperature_y)-np.array(sensor.level_y), color=stl.wheel[0],       label='Differentiated')
+
+            t1 = sensor.temperature_ux[0]
+            t2 = sensor.level_ux[-1]
+            diff_y = np.array(sensor.temperature_y)[np.array(sensor.temperature_ux) <= t2]
+            diff_y = diff_y - np.array(sensor.level_y[-len(diff_y):])
+            diff_ux = np.array(sensor.level_ux[-len(diff_y):])
+            self.dax[2].plot(hlp.ux_to_dt(diff_ux), diff_y, color=stl.wheel[0],       label='Differentiated')
 
             for i in range(params.N_ROBUST_IN_BOUNDS):
                 t2 = sensor.level_ux[len(sensor.level_ux)-1]-params.S_ROBUST_CYCLE*(i)
                 t1 = sensor.level_ux[len(sensor.level_ux)-1]-params.S_ROBUST_CYCLE*(i)-params.S_ROBUST_WIDTH
             
-                yy = np.array(sensor.temperature_y) - np.array(sensor.level_y)
-                xx = hlp.ux_to_dt(np.array(sensor.level_ux)[(sensor.level_ux > t1) & (sensor.level_ux < t2)])
+                yy = diff_y[(diff_ux >= t1) & (diff_ux <= t2)]
+                xx = hlp.ux_to_dt(diff_ux[(diff_ux >= t1) & (diff_ux <= t2)])
                 if len(xx) > 0:
-                    maxval = np.ones(len(xx))*max(yy[(sensor.level_ux > t1) & (sensor.level_ux < t2)])
+                    maxval = np.ones(len(xx))*max(yy)
                     lx = [xx[0], xx[0]]
                     ly = [maxval[0]-0.5, maxval[0]+0.5]
                     rx = [xx[-1], xx[-1]]
@@ -393,7 +406,7 @@ class Director():
                     self.dax[2].plot(lx, ly, color=stl.wheel[1], linewidth=2)
                     self.dax[2].plot(rx, ry, color=stl.wheel[1], linewidth=2)
             
-                    minval = np.ones(len(xx))*min(yy[(sensor.level_ux > t1) & (sensor.level_ux < t2)])
+                    minval = np.ones(len(xx))*min(yy)
                     lx = [xx[0], xx[0]]
                     ly = [minval[0]-0.5, minval[0]+0.5]
                     rx = [xx[-1], xx[-1]]
@@ -425,14 +438,18 @@ class Director():
             sensor = self.sensors[sid]
 
             if len(sensor.temperature_ux) > 0:
-                C = 'C{}'.format(i)
-                C = stl.wheel[i%len(stl.wheel)]
+                C = stl.wheel[0]
+                A = stl.wheel[1]
+                state = np.array(sensor.state)
+
                 self.hax[i].plot(hlp.ux_to_dt(sensor.temperature_ux), sensor.temperature_y, color=C, label='Temperature')
                 self.hax[i].plot(hlp.ux_to_dt(sensor.level_ux), sensor.level_y, '-k', linewidth=2)
-                self.hax[i].fill_between(hlp.ux_to_dt(sensor.upper_bound_ux), sensor.upper_bound_y, sensor.lower_bound_y, alpha=0.5, color=C)
+                self.hax[i].fill_between(hlp.ux_to_dt(sensor.upper_bound_ux), sensor.upper_bound_y, sensor.lower_bound_y, alpha=0.33, color=C, where=(state==0), label='Bounds')
+                self.hax[i].fill_between(hlp.ux_to_dt(sensor.upper_bound_ux), 0, 1, alpha=0.5, color=A, where=(state==1), label='Alert', transform=self.hax[i].get_xaxis_transform())
                 self.hax[i].axvline(hlp.ux_to_dt(sensor.temperature_ux[-1] - params.S_DELAY), color='k')
                 self.hax[i].legend(loc='upper right')
                 self.hax[i].set_ylabel('Temperature [deg]')
+            self.hax[i].legend(loc='upper left')
         self.hax[-1].set_xlabel('Time')
 
         if blocking:
