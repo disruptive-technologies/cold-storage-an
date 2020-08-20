@@ -37,6 +37,7 @@ class Sensor():
         self.upper_bound_y  = [] # upper bound value
         self.lower_bound_ux = [] # lower bound unixtime
         self.lower_bound_y  = [] # lower bound value
+        self.state          = []
 
         # variables
         self.n_samples    = 0 # number of event samples received
@@ -106,6 +107,16 @@ class Sensor():
             self.lower_bound_ux.append(self.temperature_ux[-1] - params.S_DELAY)
             self.lower_bound_y.append(self.temperature_y[-1])
 
+        # set alert state
+        self.set_state()
+
+
+    def set_state(self):
+        if self.level_y[-1] > params.STORAGE_MAXTEMP:
+            self.state.append(1)
+        else:
+            self.state.append(0)
+
 
     def robust_sampling(self):
         """
@@ -113,11 +124,12 @@ class Sensor():
 
         """
 
+
         # isolate robust window
-        t1 = self.temperature_ux[-1] - params.S_DELAY - params.S_ROBUST_WIDTH
+        t1 = max([self.temperature_ux[-1] - params.S_DELAY - params.S_ROBUST_WIDTH, self.temperature_ux[0], self.level_ux[0]])
         t2 = self.temperature_ux[-1] - params.S_DELAY
         robust_window = np.array(self.temperature_y)[(self.temperature_ux >= t1) & (self.temperature_ux <= t2)]
-        robust_level  = np.array(self.level_y)[(self.temperature_ux >= t1) & (self.temperature_ux <= t2)]
+        robust_level  = np.array(self.level_y)[self.level_ux <= t2][-len(robust_window):]
         
         if len(robust_window) > 0:
             # calculate min and max of delayed window
