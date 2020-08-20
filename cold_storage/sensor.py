@@ -112,6 +112,10 @@ class Sensor():
 
 
     def set_state(self):
+        """
+        Set own alert state based on level value.
+
+        """
         if self.level_y[-1] > params.STORAGE_MAXTEMP:
             self.state.append(1)
         else:
@@ -123,7 +127,6 @@ class Sensor():
         Find maxval, minval and MAD for historic data window.
 
         """
-
 
         # isolate robust window
         t1 = max([self.temperature_ux[-1] - params.S_DELAY - params.S_ROBUST_WIDTH, self.temperature_ux[0], self.level_ux[0]])
