@@ -1,10 +1,7 @@
 # packages
-import sys
 import numpy             as np
-import matplotlib.pyplot as plt
 
 # project
-import config.styling       as stl
 import config.parameters    as params
 import cold_storage.helpers as helpers
 
