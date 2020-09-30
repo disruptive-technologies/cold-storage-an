@@ -1,7 +1,7 @@
 # Cold Storage Anomaly Detection
 
 ## What am I?
-This repository contains the example code talked about in [this application note (LINK PENDING)](https://www.disruptive-technologies.com/), proposing a method of using the Disruptive Technologies (DT) Wireless Temperature Sensors for automatically detecting cold storage anomalies. Written in Python 3, it implements the DT Developer API to communicate with a DT Studio project and its sensors. By calling sensor_stream.py, a continuous calculation of cold storage temperature data will be performed for previous history data and/or a live stream of datapoints from the moment of execution.
+This repository contains the example code talked about in [this application note](https://support.disruptive-technologies.com/hc/en-us/articles/360015485580), proposing a method of using the Disruptive Technologies (DT) Wireless Temperature Sensors for automatically detecting cold storage anomalies. Written in Python 3, it implements the DT Developer API to communicate with a DT Studio project and its sensors. By calling sensor_stream.py, a continuous calculation of cold storage temperature data will be performed for previous history data and/or a live stream of datapoints from the moment of execution.
 
 ## Before Running Any code
 A DT Studio project containing temperature sensors should be made. All temperature sensors in the project will be assumed used for cold storage purposes.
